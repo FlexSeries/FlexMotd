@@ -46,7 +46,7 @@ import java.util.Map;
 public final class SCmdPingMessage extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
 
     public SCmdPingMessage(FlexCommand<FlexMotd> parent) {
-        super(parent, "message", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_MESSAGE_LIST));
+        super(parent, "message", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_MESSAGE_LIST).description("Select or list ping messages"));
     }
 
     @Override
