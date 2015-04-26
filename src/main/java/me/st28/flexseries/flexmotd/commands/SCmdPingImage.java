@@ -46,7 +46,7 @@ import java.util.Map;
 public final class SCmdPingImage extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
 
     public SCmdPingImage(FlexCommand<FlexMotd> parent) {
-        super(parent, "image", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_IMAGE_LIST));
+        super(parent, "image", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_IMAGE_LIST).description("Select or list ping images"));
     }
 
     @Override

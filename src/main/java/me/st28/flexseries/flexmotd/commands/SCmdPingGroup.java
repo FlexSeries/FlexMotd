@@ -46,7 +46,7 @@ import java.util.Map;
 public final class SCmdPingGroup extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
 
     public SCmdPingGroup(FlexCommand<FlexMotd> parent) {
-        super(parent, "group", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_GROUP_LIST));
+        super(parent, "group", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_GROUP_LIST).description("Select or list ping information groups"));
     }
 
     @Override
