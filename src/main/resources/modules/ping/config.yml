@@ -1,0 +1,12 @@
+groups:
+  allDefault:
+    message: 'default'
+    image: 'default'
+message:
+  messages:
+    default: |
+      This is the first line
+      This is the second line
+image:
+  images:
+    default: 'server-icon.png'
