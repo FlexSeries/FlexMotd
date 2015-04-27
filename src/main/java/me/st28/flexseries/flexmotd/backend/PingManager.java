@@ -29,6 +29,7 @@ import me.st28.flexseries.flexcore.plugin.module.FlexModule;
 import me.st28.flexseries.flexcore.storage.flatfile.YamlFileManager;
 import me.st28.flexseries.flexcore.util.InternalUtils;
 import me.st28.flexseries.flexmotd.FlexMotd;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -103,7 +104,7 @@ public final class PingManager extends FlexModule<FlexMotd> implements Listener 
         // Load messages
         ConfigurationSection messageSec = config.getConfigurationSection("message.messages");
         for (String name : messageSec.getKeys(false)) {
-            messages.put(name.toLowerCase(), ChatColor.translateAlternateColorCodes('&', messageSec.getString(name)));
+            messages.put(name.toLowerCase(), ChatColor.translateAlternateColorCodes('&', StringEscapeUtils.unescapeJava(messageSec.getString(name))));
         }
 
         // Load images
