@@ -6,7 +6,7 @@
 
     <groupId>me.st28.flexseries</groupId>
     <artifactId>flexmotd</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>FlexMotd</name>
     <description>Server list MOTD changer</description>
     <url>http://stealthyone.com/</url>

@@ -3,7 +3,7 @@ errors:
   image_already_set: '&cThe ping image is already set to ''&6{NAME}&c''.'
   image_not_found: '&cUnknown ping image: &6{NAME}'
   message_already_set: '&cThe ping message is already set to ''&6{NAME}&c''.'
-  message_not_found: '&cUnknown ping message: '&6{NAME}'
+  message_not_found: '&cUnknown ping message: &6{NAME}'
 notices:
   group_set: '&9Successfully set ping information group to ''&6{NAME}&9''.'
   image_set: '&9Successfully set ping image to ''&6{NAME}&9''.'
