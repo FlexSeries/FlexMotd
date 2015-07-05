@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.st28.flexseries.flexmotd.commands;
+package me.st28.flexseries.flexmotd.commands.ping;
 
 import me.st28.flexseries.flexcore.command.FlexCommand;
 import me.st28.flexseries.flexcore.command.FlexCommandSettings;

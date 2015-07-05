@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.st28.flexseries.flexmotd.commands;
+package me.st28.flexseries.flexmotd.commands.ping;
 
 import me.st28.flexseries.flexcore.command.*;
 import me.st28.flexseries.flexcore.command.exceptions.CommandInterruptedException;
@@ -43,10 +43,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class SCmdPingGroup extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
+public final class SCmdPingImage extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
 
-    public SCmdPingGroup(FlexCommand<FlexMotd> parent) {
-        super(parent, "group", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_GROUP_LIST).description("Select or list ping information groups"));
+    public SCmdPingImage(FlexCommand<FlexMotd> parent) {
+        super(parent, "image", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_IMAGE_LIST).description("Select or list ping images"));
     }
 
     @Override
@@ -56,12 +56,12 @@ public final class SCmdPingGroup extends FlexSubcommand<FlexMotd> implements Fle
         if (args.length == 0) {
             // List
 
-            ListBuilder builder = new ListBuilder("subtitle", "Ping Info", "Group", label);
+            ListBuilder builder = new ListBuilder("subtitle", "Ping Info", "Image", label);
 
-            builder.addMessage(StringUtils.collectionToString(pingManager.getGroups().keySet(), new StringConverter<String>() {
+            builder.addMessage(StringUtils.collectionToString(pingManager.getImages().keySet(), new StringConverter<String>() {
                 @Override
                 public String toString(String string) {
-                    return ChatColor.GOLD + string;
+                    return (pingManager.getSelectedImage().equals(string) ? ChatColor.GREEN : ChatColor.RED) + string;
                 }
             }, ChatColor.DARK_GRAY + ", ", "" + ChatColor.RED + ChatColor.ITALIC + "Nothing here"));
 
@@ -69,21 +69,24 @@ public final class SCmdPingGroup extends FlexSubcommand<FlexMotd> implements Fle
             return;
         }
 
-        CommandUtils.performPermissionTest(sender, PermissionNodes.PING_GROUP_SET);
+        CommandUtils.performPermissionTest(sender, PermissionNodes.PING_IMAGE_SET);
 
-        // Set group
+        // Set image
         String name = args[0];
         try {
-            pingManager.setGroup(name);
-            MessageReference.create(FlexMotd.class, "notices.group_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
+            if (pingManager.setImage(name)) {
+                MessageReference.create(FlexMotd.class, "notices.ping_image_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
+            } else {
+                MessageReference.create(FlexMotd.class, "errors.ping_image_already_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
+            }
         } catch (IllegalArgumentException ex) {
-            throw new CommandInterruptedException(MessageReference.create(FlexMotd.class, "errors.group_not_found", new ReplacementMap("{NAME}", name).getMap()));
+            throw new CommandInterruptedException(MessageReference.create(FlexMotd.class, "errors.ping_image_not_found", new ReplacementMap("{NAME}", name).getMap()));
         }
     }
 
     @Override
     public List<String> getTabOptions(CommandSender sender, String[] args) {
-        return new ArrayList<>(FlexPlugin.getRegisteredModule(PingManager.class).getGroups().keySet());
+        return new ArrayList<>(FlexPlugin.getRegisteredModule(PingManager.class).getImages().keySet());
     }
 
 }

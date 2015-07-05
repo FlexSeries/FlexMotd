@@ -26,18 +26,22 @@ package me.st28.flexseries.flexmotd;
 
 import me.st28.flexseries.flexcore.command.FlexCommandWrapper;
 import me.st28.flexseries.flexcore.plugin.FlexPlugin;
+import me.st28.flexseries.flexmotd.backend.MotdManager;
 import me.st28.flexseries.flexmotd.backend.PingManager;
-import me.st28.flexseries.flexmotd.commands.CmdPing;
+import me.st28.flexseries.flexmotd.commands.motd.CmdMotd;
+import me.st28.flexseries.flexmotd.commands.ping.CmdPing;
 
 public final class FlexMotd extends FlexPlugin {
 
     @Override
     public void handlePluginLoad() {
+        registerModule(new MotdManager(this));
         registerModule(new PingManager(this));
     }
 
     @Override
     public void handlePluginEnable() {
+        FlexCommandWrapper.registerCommand(this, new CmdMotd(this));
         FlexCommandWrapper.registerCommand(this, new CmdPing(this));
     }
 

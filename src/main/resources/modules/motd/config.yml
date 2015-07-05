@@ -1,0 +1,5 @@
+current: default
+motds:
+  default: |
+    &aWelcome to &6{SERVER}&a, {NAME}!
+    &cWebsite: &bhttp://website.com/

@@ -22,20 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.st28.flexseries.flexmotd.commands;
+package me.st28.flexseries.flexmotd.commands.motd;
 
 import me.st28.flexseries.flexcore.command.*;
 import me.st28.flexseries.flexcore.command.exceptions.CommandInterruptedException;
-import me.st28.flexseries.flexcore.list.ListBuilder;
 import me.st28.flexseries.flexcore.message.MessageReference;
 import me.st28.flexseries.flexcore.message.ReplacementMap;
 import me.st28.flexseries.flexcore.plugin.FlexPlugin;
-import me.st28.flexseries.flexcore.util.StringConverter;
-import me.st28.flexseries.flexcore.util.StringUtils;
 import me.st28.flexseries.flexmotd.FlexMotd;
-import me.st28.flexseries.flexmotd.backend.PingManager;
+import me.st28.flexseries.flexmotd.backend.MotdManager;
 import me.st28.flexseries.flexmotd.permission.PermissionNodes;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -43,50 +39,35 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class SCmdPingMessage extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
+public final class SCmdMotdSet extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
 
-    public SCmdPingMessage(FlexCommand<FlexMotd> parent) {
-        super(parent, "message", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_MESSAGE_LIST).description("Select or list ping messages"));
+    public SCmdMotdSet(FlexCommand<FlexMotd> parent) {
+        super(parent, "set", Collections.singletonList(new CommandArgument("name", true)), new FlexCommandSettings()
+            .permission(PermissionNodes.MOTD_SET)
+            .description("Select MOTD")
+        );
     }
 
     @Override
     public void runCommand(CommandSender sender, String command, String label, String[] args, Map<String, String> parameters) {
-        final PingManager pingManager = FlexPlugin.getRegisteredModule(PingManager.class);
-
-        if (args.length == 0) {
-            // List
-
-            ListBuilder builder = new ListBuilder("subtitle", "Ping Info", "Message", label);
-
-            builder.addMessage(StringUtils.collectionToString(pingManager.getMessages().keySet(), new StringConverter<String>() {
-                @Override
-                public String toString(String string) {
-                    return (pingManager.getSelectedMessage().equals(string) ? ChatColor.GREEN : ChatColor.RED) + string;
-                }
-            }, ChatColor.DARK_GRAY + ", ", "" + ChatColor.RED + ChatColor.ITALIC + "Nothing here"));
-
-            builder.sendTo(sender, 1);
-            return;
-        }
-
-        CommandUtils.performPermissionTest(sender, PermissionNodes.PING_MESSAGE_SET);
+        final MotdManager motdManager = FlexPlugin.getRegisteredModule(MotdManager.class);
 
         // Set message
         String name = args[0];
         try {
-            if (pingManager.setMessage(name)) {
-                MessageReference.create(FlexMotd.class, "notices.message_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
+            if (motdManager.setMotd(name)) {
+                MessageReference.create(FlexMotd.class, "notices.motd_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
             } else {
-                MessageReference.create(FlexMotd.class, "errors.message_already_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
+                MessageReference.create(FlexMotd.class, "errors.motd_already_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
             }
         } catch (IllegalArgumentException ex) {
-            throw new CommandInterruptedException(MessageReference.create(FlexMotd.class, "errors.message_not_found", new ReplacementMap("{NAME}", name).getMap()));
+            throw new CommandInterruptedException(MessageReference.create(FlexMotd.class, "errors.motd_not_found", new ReplacementMap("{NAME}", name).getMap()));
         }
     }
 
     @Override
     public List<String> getTabOptions(CommandSender sender, String[] args) {
-        return new ArrayList<>(FlexPlugin.getRegisteredModule(PingManager.class).getMessages().keySet());
+        return new ArrayList<>(FlexPlugin.getRegisteredModule(MotdManager.class).getMotds().keySet());
     }
 
 }

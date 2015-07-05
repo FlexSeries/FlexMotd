@@ -10,6 +10,9 @@ commands:
   flexping:
     description: 'Base ping modification command'
     aliases: [fping]
+  motd:
+    description: 'Base MOTD command'
+    aliases: [fmotd]
 
 permissions:
   ##########
@@ -18,6 +21,8 @@ permissions:
   flexmotd.admin:
     default: op
     children:
+      flexmotd.motd.list: true
+      flexmotd.motd.set: true
       flexmotd.ping.group.list: true
       flexmotd.ping.group.set: true
       flexmotd.ping.image.list: true
@@ -25,9 +30,24 @@ permissions:
       flexmotd.ping.message.list: true
       flexmotd.ping.message.set: true
 
+  flexmotd.user:
+    default: true
+    children:
+      flexmotd.motd: true
+
   #########
   # Nodes #
   #########
+  flexmotd.motd:
+    description: 'Ability to view the current MOTD'
+    default: false
+  flexmotd.motd.list:
+    description: 'Ability to list MOTDs'
+    default: false
+  flexmotd.motd.set:
+    description: 'Ability to set the MOTD'
+    default: false
+
   flexmotd.ping.group.list:
     description: 'Ability to list ping information groups.'
     default: false

@@ -36,11 +36,15 @@ public enum PermissionNodes implements PermissionNode {
     PING_IMAGE_SET,
 
     PING_MESSAGE_LIST,
-    PING_MESSAGE_SET;
+    PING_MESSAGE_SET,
+
+    MOTD,
+    MOTD_LIST,
+    MOTD_SET;
 
     private String node;
 
-    private PermissionNodes() {
+    PermissionNodes() {
         node = "flexmotd." + toString().toLowerCase().replace("_", ".");
     }
 

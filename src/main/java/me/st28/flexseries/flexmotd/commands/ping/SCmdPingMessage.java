@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.st28.flexseries.flexmotd.commands;
+package me.st28.flexseries.flexmotd.commands.ping;
 
 import me.st28.flexseries.flexcore.command.*;
 import me.st28.flexseries.flexcore.command.exceptions.CommandInterruptedException;
@@ -43,10 +43,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class SCmdPingImage extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
+public final class SCmdPingMessage extends FlexSubcommand<FlexMotd> implements FlexTabCompleter {
 
-    public SCmdPingImage(FlexCommand<FlexMotd> parent) {
-        super(parent, "image", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_IMAGE_LIST).description("Select or list ping images"));
+    public SCmdPingMessage(FlexCommand<FlexMotd> parent) {
+        super(parent, "message", Collections.singletonList(new CommandArgument("name", false)), new FlexCommandSettings().permission(PermissionNodes.PING_MESSAGE_LIST).description("Select or list ping messages"));
     }
 
     @Override
@@ -56,12 +56,12 @@ public final class SCmdPingImage extends FlexSubcommand<FlexMotd> implements Fle
         if (args.length == 0) {
             // List
 
-            ListBuilder builder = new ListBuilder("subtitle", "Ping Info", "Image", label);
+            ListBuilder builder = new ListBuilder("subtitle", "Ping Info", "Message", label);
 
-            builder.addMessage(StringUtils.collectionToString(pingManager.getImages().keySet(), new StringConverter<String>() {
+            builder.addMessage(StringUtils.collectionToString(pingManager.getMessages().keySet(), new StringConverter<String>() {
                 @Override
                 public String toString(String string) {
-                    return (pingManager.getSelectedImage().equals(string) ? ChatColor.GREEN : ChatColor.RED) + string;
+                    return (pingManager.getSelectedMessage().equals(string) ? ChatColor.GREEN : ChatColor.RED) + string;
                 }
             }, ChatColor.DARK_GRAY + ", ", "" + ChatColor.RED + ChatColor.ITALIC + "Nothing here"));
 
@@ -69,24 +69,24 @@ public final class SCmdPingImage extends FlexSubcommand<FlexMotd> implements Fle
             return;
         }
 
-        CommandUtils.performPermissionTest(sender, PermissionNodes.PING_IMAGE_SET);
+        CommandUtils.performPermissionTest(sender, PermissionNodes.PING_MESSAGE_SET);
 
-        // Set image
+        // Set message
         String name = args[0];
         try {
-            if (pingManager.setImage(name)) {
-                MessageReference.create(FlexMotd.class, "notices.image_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
+            if (pingManager.setMessage(name)) {
+                MessageReference.create(FlexMotd.class, "notices.ping_message_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
             } else {
-                MessageReference.create(FlexMotd.class, "errors.image_already_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
+                MessageReference.create(FlexMotd.class, "errors.ping_message_already_set", new ReplacementMap("{NAME}", name).getMap()).sendTo(sender);
             }
         } catch (IllegalArgumentException ex) {
-            throw new CommandInterruptedException(MessageReference.create(FlexMotd.class, "errors.image_not_found", new ReplacementMap("{NAME}", name).getMap()));
+            throw new CommandInterruptedException(MessageReference.create(FlexMotd.class, "errors.ping_message_not_found", new ReplacementMap("{NAME}", name).getMap()));
         }
     }
 
     @Override
     public List<String> getTabOptions(CommandSender sender, String[] args) {
-        return new ArrayList<>(FlexPlugin.getRegisteredModule(PingManager.class).getImages().keySet());
+        return new ArrayList<>(FlexPlugin.getRegisteredModule(PingManager.class).getMessages().keySet());
     }
 
 }
