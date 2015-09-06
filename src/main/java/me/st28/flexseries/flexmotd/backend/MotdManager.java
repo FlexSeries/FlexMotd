@@ -24,11 +24,12 @@
  */
 package me.st28.flexseries.flexmotd.backend;
 
-import me.st28.flexseries.flexcore.events.PlayerJoinLoadedEvent;
-import me.st28.flexseries.flexcore.logging.LogHelper;
-import me.st28.flexseries.flexcore.message.MessageReference;
-import me.st28.flexseries.flexcore.message.variable.MessageVariable;
-import me.st28.flexseries.flexcore.plugin.module.FlexModule;
+import me.st28.flexseries.flexlib.log.LogHelper;
+import me.st28.flexseries.flexlib.message.reference.PlainMessageReference;
+import me.st28.flexseries.flexlib.message.variable.MessageVariable;
+import me.st28.flexseries.flexlib.player.PlayerExtendedJoinEvent;
+import me.st28.flexseries.flexlib.plugin.module.FlexModule;
+import me.st28.flexseries.flexlib.plugin.module.ModuleDescriptor;
 import me.st28.flexseries.flexmotd.FlexMotd;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,7 +47,7 @@ public final class MotdManager extends FlexModule<FlexMotd> implements Listener 
     private final Map<String, String> motds = new HashMap<>();
 
     public MotdManager(FlexMotd plugin) {
-        super(plugin, "motd", "Manages MOTDs", false);
+        super(plugin, "motd", "Manages MOTDs", new ModuleDescriptor().setGlobal(true).setSmartLoad(false));
     }
 
     @Override
@@ -103,11 +104,11 @@ public final class MotdManager extends FlexModule<FlexMotd> implements Listener 
     }
 
     @EventHandler
-    public void onPlayerJoinLoaded(PlayerJoinLoadedEvent e) {
+    public void onPlayerJoinLoaded(PlayerExtendedJoinEvent e) {
         String motd = getCurrentMotd();
 
         if (motd != null) {
-            e.addLoginMessage(FlexMotd.class, "motd", MessageReference.createPlain(MessageVariable.handleReplacements(e.getPlayer(), motd)));
+            e.addLoginMessage(FlexMotd.class, "motd", new PlainMessageReference(MessageVariable.handleReplacements(e.getPlayer(), motd)));
         }
     }
 

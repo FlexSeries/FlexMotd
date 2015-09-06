@@ -24,10 +24,10 @@
  */
 package me.st28.flexseries.flexmotd.backend;
 
-import me.st28.flexseries.flexcore.logging.LogHelper;
-import me.st28.flexseries.flexcore.plugin.module.FlexModule;
-import me.st28.flexseries.flexcore.storage.flatfile.YamlFileManager;
-import me.st28.flexseries.flexcore.util.InternalUtils;
+import me.st28.flexseries.flexlib.log.LogHelper;
+import me.st28.flexseries.flexlib.plugin.module.FlexModule;
+import me.st28.flexseries.flexlib.plugin.module.ModuleDescriptor;
+import me.st28.flexseries.flexlib.storage.flatfile.YamlFileManager;
 import me.st28.flexseries.flexmotd.FlexMotd;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.Validate;
@@ -61,11 +61,11 @@ public final class PingManager extends FlexModule<FlexMotd> implements Listener 
     private final Map<String, CachedServerIcon> images = new HashMap<>();
 
     public PingManager(FlexMotd plugin) {
-        super(plugin, "ping", "Manages the message that shows up on the client's server list.", true);
+        super(plugin, "ping", "Manages the message that shows up on the client's server list.", new ModuleDescriptor().setGlobal(true).setSmartLoad(false));
     }
 
     @Override
-    protected void handleLoad() {
+    protected void handleEnable() {
         dataFile = new YamlFileManager(getDataFolder() + File.separator + "selected.yml");
         imageDir = new File(getDataFolder() + File.separator + "images");
         imageDir.mkdirs();
@@ -110,33 +110,17 @@ public final class PingManager extends FlexModule<FlexMotd> implements Listener 
         // Load images
         ConfigurationSection imageSec = config.getConfigurationSection("image.images");
 
-        // Begin reflection
-        Server server = Bukkit.getServer();
-        Class serverClass = null;
-        Method methodLoadIcon = null;
+        for (String name : imageSec.getKeys(false)) {
+            String fileName = imageSec.getString(name);
+            File file = fileName == null ? null : new File(imageDir + File.separator + fileName);
 
-        try {
-            serverClass = InternalUtils.getCBClass("CraftServer");
-
-            methodLoadIcon = serverClass.getDeclaredMethod("loadServerIcon", File.class);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        // End reflection
-
-        if (serverClass != null) {
-            for (String name : imageSec.getKeys(false)) {
-                String fileName = imageSec.getString(name);
-                File file = fileName == null ? null : new File(imageDir + File.separator + fileName);
-
-                if (file == null || !file.exists()) {
-                    LogHelper.warning(this, "Image file '" + fileName + "' not found.");
-                } else {
-                    try {
-                        images.put(name.toLowerCase(), (CachedServerIcon) methodLoadIcon.invoke(server, file));
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+            if (file == null || !file.exists()) {
+                LogHelper.warning(this, "Image file '" + fileName + "' not found.");
+            } else {
+                try {
+                    images.put(name.toLowerCase(), Bukkit.getServer().loadServerIcon(file));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }

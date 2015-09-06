@@ -22,27 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.st28.flexseries.flexmotd;
+package me.st28.flexseries.flexmotd.commands.arguments;
 
-import me.st28.flexseries.flexlib.command.FlexCommandWrapper;
+import me.st28.flexseries.flexlib.command.argument.DummyArgument;
 import me.st28.flexseries.flexlib.plugin.FlexPlugin;
 import me.st28.flexseries.flexmotd.backend.MotdManager;
-import me.st28.flexseries.flexmotd.backend.PingManager;
-import me.st28.flexseries.flexmotd.commands.CmdMotd;
-import me.st28.flexseries.flexmotd.commands.CmdPing;
 
-public final class FlexMotd extends FlexPlugin {
+import java.util.ArrayList;
+import java.util.List;
 
-    @Override
-    public void handleLoad() {
-        registerModule(new MotdManager(this));
-        registerModule(new PingManager(this));
+public class MotdArgument extends DummyArgument {
+
+    public MotdArgument(String name, boolean isRequired) {
+        super(name, isRequired);
     }
 
     @Override
-    public void handleEnable() {
-        FlexCommandWrapper.registerCommand(new CmdMotd(this));
-        FlexCommandWrapper.registerCommand(new CmdPing(this));
+    public List<String> getSuggestions(String input) {
+        return new ArrayList<>(FlexPlugin.getGlobalModule(MotdManager.class).getMotds().keySet());
     }
 
 }

@@ -24,7 +24,7 @@
  */
 package me.st28.flexseries.flexmotd.permission;
 
-import me.st28.flexseries.flexcore.permission.PermissionNode;
+import me.st28.flexseries.flexlib.permission.PermissionNode;
 import org.bukkit.permissions.Permissible;
 
 public enum PermissionNodes implements PermissionNode {

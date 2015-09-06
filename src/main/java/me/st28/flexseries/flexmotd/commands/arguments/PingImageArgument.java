@@ -22,26 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.st28.flexseries.flexmotd.commands.ping;
+package me.st28.flexseries.flexmotd.commands.arguments;
 
-import me.st28.flexseries.flexcore.command.FlexCommand;
-import me.st28.flexseries.flexcore.command.FlexCommandSettings;
-import me.st28.flexseries.flexmotd.FlexMotd;
-import org.bukkit.command.CommandSender;
+import me.st28.flexseries.flexlib.command.argument.DummyArgument;
+import me.st28.flexseries.flexlib.plugin.FlexPlugin;
+import me.st28.flexseries.flexmotd.backend.PingManager;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public final class CmdPing extends FlexCommand<FlexMotd> {
+public class PingImageArgument extends DummyArgument {
 
-    public CmdPing(FlexMotd plugin) {
-        super(plugin, "flexping", null, new FlexCommandSettings().setDummyCommand(true));
-
-        registerSubcommand(new SCmdPingGroup(this));
-        registerSubcommand(new SCmdPingImage(this));
-        registerSubcommand(new SCmdPingMessage(this));
+    public PingImageArgument(String name, boolean isRequired) {
+        super(name, isRequired);
     }
 
     @Override
-    public void runCommand(CommandSender sender, String command, String label, String[] args, Map<String, String> parameters) {}
+    public List<String> getSuggestions(String input) {
+        return new ArrayList<>(FlexPlugin.getGlobalModule(PingManager.class).getImages().keySet());
+    }
 
 }
