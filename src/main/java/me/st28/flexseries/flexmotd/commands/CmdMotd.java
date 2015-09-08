@@ -89,7 +89,7 @@ public final class CmdMotd extends FlexCommand<FlexMotd> {
             builder.addMessage(StringUtils.collectionToString(motdManager.getMotds().keySet(), ChatColor.DARK_GRAY + ", ", new StringConverter<String>() {
                 @Override
                 public String toString(String object) {
-                    return (motdManager.getCurrentMotd().equals(object) ? ChatColor.GREEN : ChatColor.RED) + object;
+                    return (motdManager.getSelected().equals(object) ? ChatColor.GREEN : ChatColor.RED) + object;
                 }
             }, "" + ChatColor.RED + ChatColor.ITALIC + "Nothing here"));
 
