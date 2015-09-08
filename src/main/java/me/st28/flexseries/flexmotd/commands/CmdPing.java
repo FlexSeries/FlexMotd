@@ -47,7 +47,7 @@ import java.util.List;
 public final class CmdPing extends DummyCommand<FlexMotd> {
 
     public CmdPing(FlexMotd plugin) {
-        super(plugin, new CommandDescriptor("flexping").dummy(true));
+        super(plugin, new CommandDescriptor("flexping").dummy(true), "help");
 
         registerSubcommand(new SCmdGroup(this));
         registerSubcommand(new SCmdImage(this));
@@ -110,7 +110,7 @@ public final class CmdPing extends DummyCommand<FlexMotd> {
     static class SCmdImage extends Subcommand<FlexMotd> {
 
         public SCmdImage(AbstractCommand<FlexMotd> parent) {
-            super(parent, new CommandDescriptor("group").permission(PermissionNodes.PING_IMAGE_LIST).description("Select or list ping images"));
+            super(parent, new CommandDescriptor("image").permission(PermissionNodes.PING_IMAGE_LIST).description("Select or list ping images"));
 
             addArgument(new PingImageArgument("name", false));
         }
