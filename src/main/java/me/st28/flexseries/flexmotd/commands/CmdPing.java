@@ -47,7 +47,7 @@ import java.util.List;
 public final class CmdPing extends DummyCommand<FlexMotd> {
 
     public CmdPing(FlexMotd plugin) {
-        super(plugin, new CommandDescriptor("flexping").dummy(true), "help");
+        super(plugin, new CommandDescriptor("flexping").dummy(true));
 
         registerSubcommand(new SCmdGroup(this));
         registerSubcommand(new SCmdImage(this));
