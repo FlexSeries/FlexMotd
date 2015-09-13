@@ -24,6 +24,7 @@
  */
 package me.st28.flexseries.flexmotd.commands.arguments;
 
+import me.st28.flexseries.flexlib.command.CommandContext;
 import me.st28.flexseries.flexlib.command.argument.DummyArgument;
 import me.st28.flexseries.flexlib.plugin.FlexPlugin;
 import me.st28.flexseries.flexmotd.backend.PingManager;
@@ -38,7 +39,7 @@ public class PingMessageArgument extends DummyArgument {
     }
 
     @Override
-    public List<String> getSuggestions(String input) {
+    public List<String> getSuggestions(CommandContext context, String input) {
         return new ArrayList<>(FlexPlugin.getGlobalModule(PingManager.class).getMessages().keySet());
     }
 
