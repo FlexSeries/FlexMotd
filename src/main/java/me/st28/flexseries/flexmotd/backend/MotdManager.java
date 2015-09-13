@@ -25,6 +25,7 @@
 package me.st28.flexseries.flexmotd.backend;
 
 import me.st28.flexseries.flexlib.log.LogHelper;
+import me.st28.flexseries.flexlib.message.reference.McmlMessageReference;
 import me.st28.flexseries.flexlib.message.reference.PlainMessageReference;
 import me.st28.flexseries.flexlib.message.variable.MessageVariable;
 import me.st28.flexseries.flexlib.player.PlayerExtendedJoinEvent;
@@ -108,7 +109,7 @@ public final class MotdManager extends FlexModule<FlexMotd> implements Listener 
         String motd = getCurrentMotd();
 
         if (motd != null) {
-            e.addLoginMessage(FlexMotd.class, "motd", new PlainMessageReference(MessageVariable.handleReplacements(e.getPlayer(), motd)));
+            e.addLoginMessage(FlexMotd.class, "motd", new McmlMessageReference(MessageVariable.handleReplacements(e.getPlayer(), motd)));
         }
     }
 

@@ -29,6 +29,7 @@ import me.st28.flexseries.flexlib.command.CommandInterruptedException.InterruptR
 import me.st28.flexseries.flexlib.message.MessageManager;
 import me.st28.flexseries.flexlib.message.ReplacementMap;
 import me.st28.flexseries.flexlib.message.list.ListBuilder;
+import me.st28.flexseries.flexlib.message.reference.McmlMessageReference;
 import me.st28.flexseries.flexlib.message.reference.MessageReference;
 import me.st28.flexseries.flexlib.message.reference.PlainMessageReference;
 import me.st28.flexseries.flexlib.message.variable.MessageVariable;
@@ -65,7 +66,7 @@ public final class CmdMotd extends FlexCommand<FlexMotd> {
 
         ListBuilder builder = new ListBuilder("subtitle", "MOTD", motdManager.getSelected(), context.getLabel());
 
-        builder.addMessage(new PlainMessageReference(MessageVariable.handleReplacements((Player) sender, motd)));
+        builder.addMessage(new McmlMessageReference(MessageVariable.handleReplacements((Player) sender, motd)));
 
         builder.sendTo(sender, 1);
     }
