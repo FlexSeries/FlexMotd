@@ -26,7 +26,6 @@ package me.st28.flexseries.flexmotd.backend;
 
 import me.st28.flexseries.flexlib.log.LogHelper;
 import me.st28.flexseries.flexlib.message.reference.McmlMessageReference;
-import me.st28.flexseries.flexlib.message.reference.PlainMessageReference;
 import me.st28.flexseries.flexlib.message.variable.MessageVariable;
 import me.st28.flexseries.flexlib.player.PlayerExtendedJoinEvent;
 import me.st28.flexseries.flexlib.plugin.module.FlexModule;
