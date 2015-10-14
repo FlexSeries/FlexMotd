@@ -31,7 +31,6 @@ import me.st28.flexseries.flexlib.message.ReplacementMap;
 import me.st28.flexseries.flexlib.message.list.ListBuilder;
 import me.st28.flexseries.flexlib.message.reference.McmlMessageReference;
 import me.st28.flexseries.flexlib.message.reference.MessageReference;
-import me.st28.flexseries.flexlib.message.reference.PlainMessageReference;
 import me.st28.flexseries.flexlib.message.variable.MessageVariable;
 import me.st28.flexseries.flexlib.plugin.FlexPlugin;
 import me.st28.flexseries.flexlib.utils.StringConverter;
